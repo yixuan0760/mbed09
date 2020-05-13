@@ -91,21 +91,43 @@ void LEDControl (Arguments *in, Reply *out)   {
     int led = x;
 
     int on = y;
-
-    int n = sprintf(strings, "/myled%d/write %d", led, on);
-
+    int n;
+    n = sprintf(strings, "/myled1/write 1");
     strcpy(buffer, strings);
+    RPC::call(buffer, outbuf);
+    
+    n = sprintf(strings, "/myled2/write 1");
+    strcpy(buffer, strings);
+    RPC::call(buffer, outbuf);
+    
+    n = sprintf(strings, "/myled3/write 1");
+    strcpy(buffer, strings);
+    RPC::call(buffer, outbuf);
+    
+  while(1){
+    
+    n = sprintf(strings, "/myled1/write 0");
+    strcpy(buffer, strings);
+    RPC::call(buffer, outbuf);
+    wait(0.5);
 
+    n = sprintf(strings, "/myled1/write 1");
+    strcpy(buffer, strings);
     RPC::call(buffer, outbuf);
 
+    n = sprintf(strings, "/myled3/write 0");
+    strcpy(buffer, strings);
+    RPC::call(buffer, outbuf);
+    wait(0.5);
+
+    n = sprintf(strings, "/myled3/write 1");
+    strcpy(buffer, strings);
+    RPC::call(buffer, outbuf);
     if (success) {
-
         out->putData(buffer);
-
     } else {
-
         out->putData("Failed to execute LED control.");
-
     }
+  }
 
 }
